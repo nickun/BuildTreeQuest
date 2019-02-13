@@ -13,15 +13,23 @@ namespace BuildTreeQuestConsole
     [ClrJob]
     public class Program
     {
-        [Benchmark(Baseline = true)]
-        public void Test_SimpleSlowTreeBuilder()
-        {
-            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
-            IList<ProjectLine> resTestData = SimpleSlowTreeBuilder.BuildTree(testData);
-        }
+        //[Benchmark(Baseline = true)]
+        //public void Test_SimpleSlowTreeBuilder()
+        //{
+        //    IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+        //    IList<ProjectLine> resTestData = SimpleSlowTreeBuilder.BuildTree(testData);
+        //}
 
+		
         // put your test here
         [Benchmark]
+        public void Test_TreeBuilderTM()
+        {
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            IList<ProjectLine> resTestData = TreeBuilderTM.BuildTree(testData);
+		}
+		
+		[Benchmark]
         public void Test_TreeBuilderNick()
         {
             IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
@@ -42,6 +50,9 @@ namespace BuildTreeQuestConsole
             RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
 
             // put your test here
+            testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
+            RunTest(testData, TreeBuilderTM.BuildTree);
+
             testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
             RunTest(testData, TreeBuilderNick.BuildTree);
 
