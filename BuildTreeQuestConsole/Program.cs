@@ -21,28 +21,29 @@ namespace BuildTreeQuestConsole
         }
 
         // put your test here
-        //[Benchmark]
-        //public void Test_TreeBuilderNick()
-        //{
-        //    IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
-        //    IList<ProjectLine> resTestData = TreeBuilderNick.BuildTree(testData);
-        //}
+        [Benchmark]
+        public void Test_TreeBuilderNick()
+        {
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            IList<ProjectLine> resTestData = TreeBuilderNick.BuildTree(testData);
+        }
 
         static void Main(string[] args)
         {
-            // load source test data
-            const int genChaptersCount = 500;
-            var rnd = new Random(DateTime.Now.Millisecond);
+            // generate source test data
+            //const int genChaptersCount = 500;
+            //var rnd = new Random(DateTime.Now.Millisecond);
 
-            IList<ProjectLine> testData = TestDataLoader.GenerateDemoData(genChaptersCount);
-            File.WriteAllLines(TestDataLoader.DemoGenDataFileName, testData.Select(i => i.Chapter).OrderBy(l => rnd.Next(genChaptersCount)));
+            //IList<ProjectLine> testData = TestDataLoader.GenerateDemoData(genChaptersCount);
+            //File.WriteAllLines(TestDataLoader.DemoGenDataFileName, testData.Select(i => i.Chapter).OrderBy(l => rnd.Next(genChaptersCount)));
 
             // simple slow build test
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
             RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
 
             // put your test here
-            //testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
-            //RunTest(testData, TreeBuilderNick.BuildTree);
+            testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            RunTest(testData, TreeBuilderNick.BuildTree);
 
             var summary = BenchmarkRunner.Run<Program>();
 
