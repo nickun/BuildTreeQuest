@@ -4,11 +4,30 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Attributes.Jobs;
+using BenchmarkDotNet.Running;
 
 namespace BuildTreeQuestConsole
 {
-    class Program
+    [ClrJob]
+    public class Program
     {
+        [Benchmark(Baseline = true)]
+        public void Test_SimpleSlowTreeBuilder()
+        {
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            IList<ProjectLine> resTestData = SimpleSlowTreeBuilder.BuildTree(testData);
+        }
+
+        // put your test here
+        //[Benchmark]
+        //public void Test_TreeBuilderNick()
+        //{
+        //    IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+        //    IList<ProjectLine> resTestData = TreeBuilderNick.BuildTree(testData);
+        //}
+
         static void Main(string[] args)
         {
             // load source test data
@@ -24,6 +43,8 @@ namespace BuildTreeQuestConsole
             // put your test here
             //testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
             //RunTest(testData, TreeBuilderNick.BuildTree);
+
+            var summary = BenchmarkRunner.Run<Program>();
 
             Console.ReadKey();
         }
