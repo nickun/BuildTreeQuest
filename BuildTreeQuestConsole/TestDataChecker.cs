@@ -41,7 +41,7 @@ namespace BuildTreeQuestConsole
 
         private static bool IsCorrectChildParentPair(string childChapter, string parentChapter)
         {
-            return childChapter.StartsWith(parentChapter + ".");
+            return childChapter.StartsWith(parentChapter + ".") && childChapter.LastIndexOf('.') == parentChapter.Length;
         }
     }
 }
