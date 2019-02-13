@@ -21,12 +21,12 @@ namespace BuildTreeQuestConsole
         }
 
         // put your test here
-        //[Benchmark]
-        //public void Test_TreeBuilderNick()
-        //{
-        //    IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
-        //    IList<ProjectLine> resTestData = TreeBuilderNick.BuildTree(testData);
-        //}
+        [Benchmark]
+        public void Test_TreeBuilderTM()
+        {
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            IList<ProjectLine> resTestData = TreeBuilderTM.BuildTree(testData);
+        }
 
         static void Main(string[] args)
         {
@@ -41,8 +41,8 @@ namespace BuildTreeQuestConsole
             RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
 
             // put your test here
-            //testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
-            //RunTest(testData, TreeBuilderNick.BuildTree);
+            testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
+            RunTest(testData, TreeBuilderTM.BuildTree);
 
             var summary = BenchmarkRunner.Run<Program>();
 
