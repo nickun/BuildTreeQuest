@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using BuildTreeQuestConsole.Helpers;
 
 namespace BuildTreeQuestConsole
@@ -24,15 +25,17 @@ namespace BuildTreeQuestConsole
             return testData;
         }
 
-        //[DebuggerDisplay("Id: {ID}, Children: {ChildrenCount}")]
+#if DEBUG
+        [DebuggerDisplay("Id: {ID}, Children: {ChildrenCount}")]
+#endif
         public class Node
         {
+#if DEBUG
             public string ID;
-
+            public int ChildrenCount => _children?.Count ?? 0;
+#endif
             private ProjectLine _nodeItem;
             private IDictionary<string, Node> _children;
-
-            public int ChildrenCount => _children?.Count ?? 0;
 
             public ProjectLine NodeItem
             {
@@ -42,11 +45,17 @@ namespace BuildTreeQuestConsole
                     // take parent from the node
                     var parentItem = ParentNode?.NodeItem;
                     if (parentItem != null && value != null)
+                    {
                         value.ParentId = parentItem.Id;
+                        parentItem.HasChildren = true;
+                    }
 
                     // set me as parent for all my children
                     if (_nodeItem == null && value != null)
+                    {
                         _children?.Values.ForEachExt(c => c.SetParentNodeItemId(value.Id));
+                        value.HasChildren = _children?.Count > 0;
+                    }
                     _nodeItem = value;
                 }
             }
@@ -55,12 +64,16 @@ namespace BuildTreeQuestConsole
 
             public Node(string id)
             {
+#if DEBUG
                 ID = id;
+#endif
             }
 
             private Node(string id, Node parentNode)
             {
+#if DEBUG
                 ID = id;
+#endif
                 ParentNode = parentNode;
             }
 
@@ -81,6 +94,7 @@ namespace BuildTreeQuestConsole
                 return childNode;
             }
 
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             private void SetParentNodeItemId(int parentId)
             {
                 if (_nodeItem != null)

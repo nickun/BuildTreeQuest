@@ -39,22 +39,22 @@ namespace BuildTreeQuestConsole
         static void Main(string[] args)
         {
             // generate source test data
-            //const int genChaptersCount = 500;
-            //var rnd = new Random(DateTime.Now.Millisecond);
+            const int genChaptersCount = 1500;
+            var rnd = new Random(DateTime.Now.Millisecond);
 
-            //IList<ProjectLine> testData = TestDataLoader.GenerateDemoData(genChaptersCount);
-            //File.WriteAllLines(TestDataLoader.DemoGenDataFileName, testData.Select(i => i.Chapter).OrderBy(l => rnd.Next(genChaptersCount)));
+            IList<ProjectLine> testData1 = TestDataLoader.GenerateDemoData(genChaptersCount);
+            File.WriteAllLines(TestDataLoader.DemoGenDataFileName, testData1.Select(i => i.Chapter).OrderBy(l => rnd.Next(genChaptersCount)));
 
             // simple slow build test
-            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
-            RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
+            //IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            //RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
 
             // put your test here
-            testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
-            RunTest(testData, TreeBuilderTM.BuildTree);
+            IList<ProjectLine> testData2 = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            RunTest(testData2, TreeBuilderTM.BuildTree);
 
-            testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
-            RunTest(testData, TreeBuilderNick.BuildTree);
+            testData2 = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            RunTest(testData2, TreeBuilderNick.BuildTree);
 
             var summary = BenchmarkRunner.Run<Program>();
 

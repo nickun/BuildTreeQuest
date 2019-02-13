@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using BuildTreeQuestConsole.Helpers;
 
 namespace BuildTreeQuestConsole
 {
@@ -103,71 +100,6 @@ namespace BuildTreeQuestConsole
             }
 
             return res;
-        }
-
-
-        [DebuggerDisplay("Id: {ID}, Children: {ChildrenCount}")]
-        class NodeGenerate
-        {
-            public int ID;
-
-            private ProjectLine _nodeItem;
-            private IDictionary<int, NodeGenerate> _children;
-
-            public int ChildrenCount => _children?.Count ?? 0;
-
-            public ProjectLine NodeItem
-            {
-                get { return _nodeItem; }
-                set
-                {
-                    // take parent from the node
-                    var parentItem = ParentNode?.NodeItem;
-                    if (parentItem != null && value != null)
-                        value.ParentId = parentItem.Id;
-
-                    // set me as parent for all my children
-                    if (_nodeItem == null && value != null)
-                        _children?.Values.ForEachExt(c => c.SetParentNodeItemId(value.Id));
-                    _nodeItem = value;
-                }
-            }
-
-            public NodeGenerate ParentNode { get; }
-
-            public NodeGenerate(int id)
-            {
-                ID = id;
-            }
-
-            private NodeGenerate(int id, NodeGenerate parentNode)
-            {
-                ID = id;
-                ParentNode = parentNode;
-            }
-
-            public NodeGenerate GetOrCreateChildNode(int childNum)
-            {
-                NodeGenerate childNode;
-                var children = _children;
-                if (children == null)
-                {
-                    childNode = new NodeGenerate(childNum, this);
-                    _children = new Dictionary<int, NodeGenerate> { { childNum, childNode } };
-                    return childNode;
-                }
-
-                if (!children.TryGetValue(childNum, out childNode))
-                    children[childNum] = childNode = new NodeGenerate(childNum, this);
-
-                return childNode;
-            }
-
-            private void SetParentNodeItemId(int parentId)
-            {
-                if (_nodeItem != null)
-                    _nodeItem.ParentId = parentId;
-            }
         }
     }
 }
