@@ -17,7 +17,16 @@ namespace BuildTreeQuestConsole
         public static IList<ProjectLine> BuildTree(IList<ProjectLine> testData)
         {
             var nodeCollector = testData.ToDictionary(i => i.Chapter);
-            var chapters = testData.OrderBy(c => c.Chapter.Split('.').Length);
+            var chapters = testData.OrderBy(pl =>
+            {
+                char[] chars = pl.Chapter.ToCharArray();
+                int len = chars.Length;
+                int n = 0;
+                for (int i = len - 1; i >= 0; i--)
+                    if (chars[i] == '.')
+                        n++;
+                return n;
+            });
             return chapters.Select(c => {
                 var k = chap(c.Chapter);
                 if (k == null) return c;
