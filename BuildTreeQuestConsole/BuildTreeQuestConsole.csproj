@@ -43,12 +43,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\ChapterComparer.cs" />
+    <Compile Include="Helpers\CollectionExtension.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleSlowTreeBuilder.cs" />
     <Compile Include="TestDataChecker.cs" />
     <Compile Include="TestDataLoader.cs" />
+    <Compile Include="TreeBuilderNick.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -56,6 +58,9 @@
   <ItemGroup>
     <Content Include="DemoData.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DemoDataGen.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

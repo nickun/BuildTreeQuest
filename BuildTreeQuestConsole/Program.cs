@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -10,23 +11,28 @@ namespace BuildTreeQuestConsole
     {
         static void Main(string[] args)
         {
+            // load source test data
+            const int genChaptersCount = 500;
+            var rnd = new Random(DateTime.Now.Millisecond);
+
+            IList<ProjectLine> testData = TestDataLoader.GenerateDemoData(genChaptersCount);
+            File.WriteAllLines(TestDataLoader.DemoGenDataFileName, testData.Select(i => i.Chapter).OrderBy(l => rnd.Next(genChaptersCount)));
+
             // simple slow build test
-            RunTest(SimpleSlowTreeBuilder.BuildTree);
+            RunTest(testData, SimpleSlowTreeBuilder.BuildTree);
 
             // put your test here
-            //RunTest(NickTreeBuilder.BuildTree);
+            //testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName); // load the same data again
+            //RunTest(testData, TreeBuilderNick.BuildTree);
 
             Console.ReadKey();
         }
 
-        static void RunTest(Func<IList<ProjectLine>, IList<ProjectLine>> buildTreeTestMethod)
+        static void RunTest(IList<ProjectLine> testData, Func<IList<ProjectLine>, IList<ProjectLine>> buildTreeTestMethod)
         {
             Stopwatch sw = new Stopwatch();
 
-            // load source test data
-            IList<ProjectLine> testData = TestDataLoader.LoadDemoData();
-
-            Console.Write($"{buildTreeTestMethod.Method.DeclaringType?.Name ?? ""}.{buildTreeTestMethod.Method.Name}");
+            Console.Write($"{buildTreeTestMethod.Method.DeclaringType?.Name ?? ""}.{buildTreeTestMethod.Method.Name}[{testData.Count}] ");
 
             sw.Restart();
             IList<ProjectLine> resTestData = buildTreeTestMethod(testData);
