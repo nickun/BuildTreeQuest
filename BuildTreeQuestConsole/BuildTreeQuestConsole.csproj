@@ -74,6 +74,7 @@
     <Compile Include="SimpleSlowTreeBuilder.cs" />
     <Compile Include="TestDataChecker.cs" />
     <Compile Include="TestDataLoader.cs" />
+    <Compile Include="TreeBuilderAlexV.cs" />
     <Compile Include="TreeBuilderNick.cs" />
     <Compile Include="TreeBuilderTM.cs" />
   </ItemGroup>

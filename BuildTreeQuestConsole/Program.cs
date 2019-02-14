@@ -36,6 +36,13 @@ namespace BuildTreeQuestConsole
             IList<ProjectLine> resTestData = TreeBuilderNick.BuildTree(testData);
         }
 
+        [Benchmark]
+        public void Test_TreeBuilderAlexV()
+        {
+            IList<ProjectLine> testData = TestDataLoader.LoadDemoData(TestDataLoader.DemoGenDataFileName);
+            IList<ProjectLine> resTestData = TreeBuilderAlexV.BuildTree(testData);
+        }
+
         static void Main(string[] args)
         {
             // generate source test data
